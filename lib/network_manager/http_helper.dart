@@ -7,32 +7,34 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'dart:io';
 
-import 'package:mvvm_arc_with_http/utils/print_value.dart';
-import 'package:mvvm_arc_with_http/utils/toast_massage.dart';
+import '../utils/print_value.dart';
+import '../utils/toast_massage.dart';
+
+
 
 class HttpHelper{
   ///Get Api
-  Future<dynamic>get({required String url,bool isRequireAuthorization=false}) async{
-    Map<String,String>apiHeaders={"Contact Type":"application/json"};
-    if(isRequireAuthorization){
-      apiHeaders={
-        "Contact Type":"application/json",
-        "CAuthorization":'Bearer"userBearerToken"'
+  Future<dynamic> get({required String url, bool isRequireAuthorization = false}) async {
+    Map<String, String> apiHeaders = {"Content-Type": "application/json"};
+    if (isRequireAuthorization) {
+      apiHeaders = {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer "userBearerToken"'
       };
     }
-    try{
-      final apiResponse= await http.get(Uri.parse(url),headers:apiHeaders);
+    try {
+      final apiResponse = await http.get(Uri.parse(url), headers: apiHeaders);
 
-      printValue(url,tag: "API GET URL");
-      printValue(apiHeaders,tag: "API HEADER");
-      printValue(apiResponse,tag: "API RESPONSE");
-      return _returnResponse(response:apiResponse);
+      printValue(url, tag: "API GET URL");
 
-    }on SocketException{
+      printValue(apiHeaders, tag: "API HEADER");
+      printValue(apiResponse, tag: "API RESPONSE");
+
+      return _returnResponse(response: apiResponse);
+    } on SocketException {
       return null;
     }
   }
-
 
   ///Post Api
   Future<dynamic>post({required String url,Object? requestBody,  bool isRequireAuthorization=false}) async{
